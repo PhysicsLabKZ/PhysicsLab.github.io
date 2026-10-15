@@ -1,0 +1,526 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>ФизЛаб</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@500;700&family=STIX+Two+Text:ital,wght@1,500&display=swap">
+<style>
+/* Layout: светлая лаборатория. Шапка и полноширинная сцена с живым опытом на пастельном градиенте, под ней цветные карточки классов как панели приборов. Страницы работы: белые карточки в одной колонке. Единый светлый стиль выбран намеренно. */
+:root{
+  --bg:#eaf8fd;--surface:#ffffff;--surface2:#e6f3fa;--line:#cfe3ee;
+  --fg:#1f2b3d;--mut:#55657d;
+  --acc:#14a3c0;--acc-ink:#0b6f87;--violet:#7c5cd6;--pink:#c026d3;--amber:#f59e0b;--ok:#15803d;
+  --card:var(--surface);
+  --f-display:'Manrope','Onest',system-ui,sans-serif;
+  --f-body:'Onest',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  --f-math:'STIX Two Text',Georgia,'Times New Roman',serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 var(--f-body);
+  background-image:radial-gradient(900px 520px at 100% 0,rgba(196,181,253,.38),transparent 62%),radial-gradient(800px 520px at 0 30%,rgba(125,211,252,.38),transparent 62%),radial-gradient(760px 520px at 92% 96%,rgba(253,224,171,.4),transparent 62%);
+  background-repeat:no-repeat}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:.55em 0}
+a{color:var(--acc-ink)}
+.in{width:100%;max-width:1088px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.pad{padding-block:22px 56px}
+:focus-visible{outline:2px solid var(--acc-ink);outline-offset:2px}
+
+/* шапка */
+.top{border-bottom:1px solid rgba(160,200,225,.55);background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding-block:12px}
+.brand{display:flex;align-items:center;gap:10px;font:800 1.3rem var(--f-display);letter-spacing:.05em;color:var(--fg);background:none;border:0;padding:0;cursor:pointer}
+.brand svg{width:42px;height:42px}
+.nav{display:flex;gap:4px;flex-wrap:wrap;min-width:0}
+.nav button{background:none;border:0;border-bottom:3px solid transparent;border-radius:0;color:var(--fg);padding:10px 14px;font-weight:500;cursor:pointer}
+.nav button:hover{color:var(--acc-ink)}
+.nav button.on{color:var(--acc-ink);border-bottom-color:var(--acc)}
+#av{margin-left:auto;width:42px;height:42px;padding:0;border-radius:50%;display:grid;place-items:center;background:#d3eef5;border:1px solid #b6dce8;font:800 1rem var(--f-display);color:var(--fg);cursor:pointer}
+#av svg{width:20px;height:20px}
+@media (max-width:640px){.nav{order:3;width:100%;justify-content:space-between}.nav button{flex:1;padding:8px 4px;font-size:.88rem}}
+
+/* герой */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid rgba(160,200,225,.55);
+  background:radial-gradient(520px 320px at 78% 38%,rgba(244,193,255,.55),transparent 70%),radial-gradient(460px 300px at 96% 96%,rgba(253,224,171,.6),transparent 70%),linear-gradient(180deg,#d3effa,#e3f6fc 60%,#eaf8fd)}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(40,110,170,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(40,110,170,.08) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:linear-gradient(180deg,#000 10%,transparent 95%);mask-image:linear-gradient(180deg,#000 10%,transparent 95%)}
+.hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:center;padding-block:34px 30px}
+.hero h1{font:800 clamp(1.8rem,6.2vw,3.1rem)/1.1 var(--f-display);letter-spacing:-.01em;color:#253650;overflow-wrap:anywhere}
+.hero h1 span{display:block}
+.lead{font-size:1.2rem;color:#3a4d68;margin:16px 0 22px}
+.feat{display:flex;flex-wrap:wrap;gap:14px 0}
+.feat div{display:flex;align-items:center;gap:10px;padding-right:18px;margin-right:18px;font-size:.85rem;line-height:1.3;color:var(--fg)}
+.feat div:not(:last-child){border-right:1px solid rgba(60,110,150,.3)}
+.feat svg{width:30px;height:30px;flex:none}
+.hero-art svg{width:100%;max-width:560px;height:auto;display:block;margin-inline:auto}
+@media (max-width:860px){.hero-grid{grid-template-columns:minmax(0,1fr)}.hero-art{order:2}}
+
+/* анимация сцены */
+@keyframes fall{0%{transform:translateY(-70px);opacity:0}8%{opacity:1}92%{transform:translateY(172px);opacity:1}100%{transform:translateY(172px);opacity:0}}
+@keyframes rise{from{transform:translateY(0);opacity:.85}to{transform:translateY(-130px);opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hball{animation:fall 7s linear infinite}
+.bub{animation:rise 5s linear infinite}
+.hand{animation:spin 12s linear infinite;transform-origin:490px 252px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* главная */
+.sect{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding-top:30px}
+.sect h2{display:flex;align-items:center;gap:12px;font:800 clamp(1.3rem,3.6vw,1.9rem) var(--f-display);color:#253650}
+.sect h2 svg{width:38px;height:38px;flex:none}
+.strip{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:4px 14px;width:min(100%,420px);padding:12px 16px;text-align:left;border-radius:14px;background:rgba(255,255,255,.88);border:1px solid var(--line);box-shadow:0 6px 20px rgba(30,90,140,.1);color:var(--fg);cursor:pointer}
+.strip:hover{border-color:var(--acc)}
+.strip svg.fl{grid-row:1/3;width:30px;height:30px}
+.strip b{font-size:.92rem}
+.strip small{color:var(--mut);font:500 .78rem var(--f-mono)}
+.strip .bar2{grid-column:2/3;height:7px;border-radius:9px;background:#d5e8f2;overflow:hidden}
+.strip .bar2 i{display:block;height:100%;width:0;border-radius:9px;background:linear-gradient(90deg,var(--acc),var(--violet));transition:width .5s}
+.strip svg.ch{grid-column:3;grid-row:1/3;width:18px;height:18px}
+.cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:20px}
+.card{--c:#38bdf8;display:grid;justify-items:center;align-content:start;gap:10px;padding:20px 12px 18px;text-align:center;border-radius:18px;color:var(--fg);cursor:pointer;
+  border:1.5px solid var(--line);background:#fff;
+  border-color:color-mix(in srgb,var(--c) 55%,#fff);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--c) 28%,#fff),color-mix(in srgb,var(--c) 9%,#fff));
+  box-shadow:0 4px 18px color-mix(in srgb,var(--c) 20%,transparent);
+  transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 32px color-mix(in srgb,var(--c) 40%,transparent)}
+.card.on{border:2px solid #f59e0b;box-shadow:0 8px 30px rgba(245,158,11,.38)}
+.ci{width:96px;height:72px}
+.cg{font:800 1.15rem var(--f-display)}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;font-size:.78rem;background:rgba(255,255,255,.75);color:var(--mut);border:1px solid color-mix(in srgb,var(--c) 35%,#fff)}
+.pill svg{width:13px;height:13px}
+.card.on .pill{background:#fbbf24;color:#3b2a00;font-weight:600;border-color:transparent}
+.cd{font-size:.86rem;color:#3a4d68;line-height:1.35}
+@media (max-width:760px){
+  .cards{grid-template-columns:minmax(0,1fr)}
+  .card{grid-template-columns:84px minmax(0,1fr);justify-items:start;text-align:left;align-content:center;gap:2px 14px;padding:14px}
+  .ci{grid-row:1/4;width:84px;height:63px;align-self:center}
+}
+.quote{display:flex;align-items:center;gap:16px;margin-block:34px 50px;color:#4a5d86;font-style:italic;font-size:.95rem}
+.quote i{flex:1;height:1px;background:linear-gradient(90deg,#9fc3da,transparent)}
+
+/* внутренние страницы */
+.back{margin-bottom:14px;background:rgba(255,255,255,.7);border-color:var(--line);color:var(--mut)}
+.back:hover{color:var(--fg);border-color:var(--acc)}
+.view h1{font:800 clamp(1.4rem,3.8vw,2rem)/1.2 var(--f-display);color:#253650;margin:.2em 0 .3em}
+.sub{color:var(--mut);margin:0 0 14px}
+.lc{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;width:100%;margin:10px 0;padding:16px 18px;border-radius:14px;text-align:left;background:#fff;border:1px solid var(--line);box-shadow:0 4px 16px rgba(30,90,140,.08);color:var(--fg)}
+.lc:not(:disabled):hover{border-color:#f59e0b;box-shadow:0 8px 26px rgba(245,158,11,.25)}
+.lc .bd{font:700 .8rem var(--f-mono);padding:4px 9px;border-radius:8px;background:rgba(20,163,192,.13);color:var(--acc-ink)}
+.lc small{display:block;color:var(--mut);font-size:.8rem}
+.lc svg{width:16px;height:16px}
+.gh{font:800 1.05rem var(--f-display);color:var(--mut);margin:26px 0 4px}
+button:disabled{opacity:.6;cursor:default}
+
+/* работа */
+.who{margin:6px 0 10px}
+input[type=text]{font:inherit;color:inherit;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 13px;width:min(100%,360px)}
+.tabs{display:flex;gap:8px;margin:0 0 14px;padding:8px 0;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(234,248,253,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.tabs button{flex:1;font-weight:600;padding:11px 8px}
+section{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;margin:0 0 16px;box-shadow:0 6px 24px rgba(30,90,140,.08)}
+section h2{display:flex;align-items:center;gap:10px;font:800 1.05rem/1.3 var(--f-display);color:#253650;margin:0 0 .8em}
+section h2::before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 4px rgba(20,163,192,.18)}
+section ol,section ul{padding-left:1.3em}
+li{margin:.3em 0}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center}
+.fr{margin:0 .2em}.calc{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}.calc:hover,.calc.on{background:#e3f5fb}.how{position:relative;margin:10px 0;padding:10px 40px 10px 14px;border-left:4px solid var(--acc);background:#eef8fc;border-radius:0 10px 10px 0}.how .x{position:absolute;right:8px;top:6px}.eq2{margin:.4em 0;overflow-x:auto;font-size:1.05rem}.fr>span{line-height:1.3;padding:0 4px}.fr>span:first-child{border-bottom:1px solid currentColor}
+.eq{text-align:center;margin:.8em 0;padding:8px;border-radius:12px;background:#eef8fc;font:italic 500 1.3rem/1.9 var(--f-math);color:#16243a;overflow-x:auto}
+.scroll{overflow-x:auto}
+.cr td{text-align:left}.cr td:last-child{text-align:center;white-space:nowrap}
+table{border-collapse:collapse;width:100%;font-size:.92rem;font-variant-numeric:tabular-nums}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:center}
+th{background:var(--surface2);font-weight:600}
+td{background:#fff}
+td.nm{font-weight:600;color:var(--acc-ink)}
+button,select,textarea{font:inherit;color:inherit;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px}
+button{cursor:pointer;transition:border-color .15s,box-shadow .15s}
+button:not(:disabled):hover{border-color:var(--acc)}
+button.p{background:linear-gradient(135deg,#0a7c96,#5b4fc9);border-color:transparent;color:#fff;font-weight:600}
+button.p:not(:disabled):hover{box-shadow:0 6px 20px rgba(11,111,135,.4);border-color:transparent}
+a.btn{display:inline-block;text-decoration:none;color:var(--fg);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 14px}
+a.btn:hover{border-color:var(--acc)}
+button.x{padding:0 7px;border-radius:6px;color:var(--mut)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+textarea{width:100%;min-height:76px}
+#sim{padding:14px;margin:12px 0;border-radius:14px;border:1px solid var(--line);background:radial-gradient(520px 260px at 50% 0,rgba(125,211,252,.28),transparent),#f6fcff}
+#sw{font:700 1.7rem var(--f-mono);min-width:6.5ch;color:var(--acc-ink)}
+#msg,.note{color:var(--mut);min-height:1.5em;font-size:.92rem}
+.res{padding:10px 14px;margin-top:12px;background:rgba(20,163,192,.08);border:1px dashed rgba(11,111,135,.45);border-radius:10px}
+#sv,#ch{width:100%;max-width:520px;display:block;margin:0 auto}
+#sv text,#ch text{fill:var(--mut);font:11px var(--f-mono)}
+.glass{fill:none;stroke:rgba(70,100,140,.6);stroke-width:2}
+.tb{cursor:pointer}.tb.sel .glass{stroke:var(--acc);stroke-width:3.5}.tb.sel{filter:drop-shadow(0 0 7px rgba(20,163,192,.55))}
+.tb.sel .tn{fill:var(--acc-ink);font-weight:700}
+.mk{stroke:#e08600;stroke-width:1.5;stroke-dasharray:4 3}
+input[type=checkbox]{accent-color:var(--acc-ink);width:1.1em;height:1.1em}
+.rpt{width:100%;min-height:120px;font:.82rem/1.45 var(--f-mono)}
+
+/* прогресс */
+.pgrid{display:grid;grid-template-columns:auto minmax(0,1fr);gap:26px;align-items:center;margin:18px 0}
+.ring{width:150px;height:150px}
+.steps{list-style:none;padding:0!important;margin:0;display:grid;gap:8px}
+.steps li{display:flex;align-items:center;gap:12px;margin:0;padding:10px 14px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.steps li i{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid #b9d3e2;display:grid;place-items:center;font:700 .75rem var(--f-mono);font-style:normal}
+.steps li.ok{border-color:rgba(21,128,61,.5);background:#f1fbf4}
+.steps li.ok i{background:var(--ok);border-color:var(--ok);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:6px}
+.stats div{padding:14px;border-radius:12px;background:#fff;border:1px solid var(--line);color:var(--mut);font-size:.85rem}
+.stats b{display:block;font:700 1.4rem var(--f-mono);color:var(--fg)}
+@media (max-width:560px){.pgrid{grid-template-columns:minmax(0,1fr);justify-items:center}.steps{width:100%}}
+
+/* телефон */
+@media (max-width:600px){
+  section{padding:16px}
+  .scroll table{min-width:560px}
+  #tabs{flex-wrap:nowrap;align-items:stretch}
+  #tabs button{flex:1 1 0;min-width:0;padding:8px 4px;font-size:.8rem;line-height:1.2}
+  .ctl button{flex:1 1 calc(50% - 8px)}
+  .ctl #sw{flex:1 1 100%;order:-1;text-align:center}
+  .ctl label{flex:1 1 100%;display:flex;justify-content:space-between;align-items:center}
+  .feat div{border:0!important;margin-right:0;padding-right:22px}
+  button.x{min-width:30px;min-height:30px}
+}
+</style>
+
+<header class="top"><div class="in bar">
+  <button class="brand" data-nav="home" aria-label="ФизЛаб, на главную">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="#0e8fae" stroke-width="2"><ellipse cx="24" cy="24" rx="20" ry="7.5"/><ellipse cx="24" cy="24" rx="20" ry="7.5" transform="rotate(60 24 24)" stroke="#7c5cd6"/><ellipse cx="24" cy="24" rx="20" ry="7.5" transform="rotate(120 24 24)" stroke="#c026d3"/></g><circle cx="24" cy="24" r="4" fill="#fbbf24"/></svg>
+    ФИЗЛАБ</button>
+  <nav class="nav" id="mainnav"><button data-nav="home" class="on">Главная</button><button data-nav="labs">Лаборатории</button><button data-nav="prog">Мой прогресс</button></nav>
+  <button id="av" data-nav="prog" aria-label="Мой прогресс"></button>
+</div></header>
+
+<main>
+<div id="home" class="view">
+  <div class="hero"><div class="in hero-grid">
+    <div class="hero-txt">
+      <h1><span>Исследуй.</span><span>Экспериментируй.</span><span>Открывай.</span></h1>
+      <p class="lead">Виртуальные лабораторные работы по физике</p>
+      <div class="feat">
+        <div><svg viewBox="0 0 32 32" fill="none" stroke="#0e8fae" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4h8M13 4v8L6 25a2.5 2.5 0 0 0 2.2 3.5h15.6A2.5 2.5 0 0 0 26 25l-7-13V4M9 20h14"/></svg>Реальные<br>эксперименты</div>
+        <div><svg viewBox="0 0 32 32" fill="none" stroke="#7c5cd6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3a9 9 0 0 0-5 16.5V23h10v-3.5A9 9 0 0 0 16 3zM12 27h8M13 30h6"/></svg>Понятные<br>объяснения</div>
+        <div><svg viewBox="0 0 32 32" fill="none" stroke="#c026d3" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="7"/><circle cx="16" cy="16" r="2" fill="#e879f9"/></svg>Полезные<br>навыки</div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 560 380" role="img" aria-label="Пробирки, цилиндр с падающим шариком, секундомер и формулы">
+        <defs>
+          <linearGradient id="h-liq" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22d3ee" stop-opacity=".85"/><stop offset=".55" stop-color="#6366f1" stop-opacity=".85"/><stop offset="1" stop-color="#e879f9" stop-opacity=".95"/></linearGradient>
+          <linearGradient id="h-gl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".8"/><stop offset=".5" stop-color="#e3f3ff" stop-opacity=".3"/><stop offset="1" stop-color="#fff" stop-opacity=".7"/></linearGradient>
+          <linearGradient id="h-ta" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38d6f2" stop-opacity=".85"/><stop offset="1" stop-color="#2563eb"/></linearGradient>
+          <linearGradient id="h-tb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b79cff" stop-opacity=".85"/><stop offset="1" stop-color="#7c3aed"/></linearGradient>
+          <linearGradient id="h-tc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fcd34d" stop-opacity=".9"/><stop offset="1" stop-color="#ea580c"/></linearGradient>
+          <radialGradient id="h-ball" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#e2e8f0"/><stop offset=".45" stop-color="#64748b"/><stop offset="1" stop-color="#0f172a"/></radialGradient>
+          <radialGradient id="h-plat" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fbbf24" stop-opacity=".9"/><stop offset=".55" stop-color="#e879f9" stop-opacity=".5"/><stop offset="1" stop-color="#e879f9" stop-opacity="0"/></radialGradient>
+          <linearGradient id="h-ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1f5f9"/><stop offset="1" stop-color="#64748b"/></linearGradient>
+        </defs>
+        <path d="M0 214C70 130 120 290 190 210S290 130 300 220" fill="none" stroke="#8b7cf6" stroke-opacity=".4" stroke-width="2"/>
+        <g fill="#14a3c0" opacity=".6"><circle cx="20" cy="30" r="1.8"/><circle cx="250" cy="22" r="1.6"/><circle cx="545" cy="150" r="1.8"/><circle cx="270" cy="330" r="1.6"/></g>
+        <g fill="#c026d3" opacity=".5"><circle cx="150" cy="18" r="1.7"/><circle cx="520" cy="360" r="1.8"/><circle cx="12" cy="250" r="1.6"/></g>
+        <!-- пробирки в штативе -->
+        <g>
+          <path d="M52 168V280a17 17 0 0 0 34 0V168" fill="url(#h-gl)" stroke="#6f8fb8" stroke-width="2"/>
+          <path d="M52 214H86V280a17 17 0 0 1 -34 0Z" fill="url(#h-ta)"/>
+          <path d="M100 168V280a17 17 0 0 0 34 0V168" fill="url(#h-gl)" stroke="#6f8fb8" stroke-width="2"/>
+          <path d="M100 196H134V280a17 17 0 0 1 -34 0Z" fill="url(#h-tb)"/>
+          <path d="M148 168V280a17 17 0 0 0 34 0V168" fill="url(#h-gl)" stroke="#6f8fb8" stroke-width="2"/>
+          <path d="M148 230H182V280a17 17 0 0 1 -34 0Z" fill="url(#h-tc)"/>
+          <rect x="34" y="250" width="166" height="8" rx="4" fill="#8aa0c8"/>
+          <rect x="30" y="296" width="174" height="12" rx="6" fill="#5b6f9a"/>
+        </g>
+        <!-- цилиндр -->
+        <ellipse cx="365" cy="346" rx="96" ry="13" fill="url(#h-plat)"/>
+        <path d="M300 24V316Q300 336 365 336Q430 336 430 316V24" fill="url(#h-gl)" stroke="#6f8fb8" stroke-width="2.5"/>
+        <path d="M302 110H428V316Q428 334 365 334Q302 334 302 316Z" fill="url(#h-liq)"/>
+        <ellipse cx="365" cy="110" rx="63" ry="7" fill="#a5f3fc" fill-opacity=".7"/>
+        <ellipse cx="365" cy="24" rx="65" ry="8" fill="none" stroke="#6f8fb8" stroke-opacity=".7" stroke-width="2"/>
+        <g fill="#fff" fill-opacity=".7">
+          <circle class="bub" style="animation-delay:0s" cx="330" cy="300" r="3"/><circle class="bub" style="animation-delay:1.2s" cx="395" cy="310" r="2.2"/>
+          <circle class="bub" style="animation-delay:2.4s" cx="350" cy="320" r="2.6"/><circle class="bub" style="animation-delay:3.1s" cx="380" cy="296" r="3.4"/>
+          <circle class="bub" style="animation-delay:.6s" cx="410" cy="290" r="2"/><circle class="bub" style="animation-delay:3.8s" cx="322" cy="312" r="2"/>
+        </g>
+        <g class="hball"><circle cx="365" cy="130" r="13" fill="url(#h-ball)" stroke="#1e293b" stroke-opacity=".5"/></g>
+        <!-- секундомер -->
+        <rect x="482" y="176" width="16" height="12" rx="3" fill="#94a3b8"/>
+        <rect x="474" y="170" width="32" height="8" rx="3" fill="#64748b"/>
+        <circle cx="490" cy="252" r="56" fill="#ffffff" stroke="url(#h-ring)" stroke-width="6"/>
+        <g id="ticks"></g>
+        <line class="hand" x1="490" y1="252" x2="490" y2="212" stroke="#1e293b" stroke-width="2.6" stroke-linecap="round"/>
+        <circle cx="490" cy="252" r="4" fill="#1e293b"/>
+        <!-- оси и векторы -->
+        <g stroke-width="2" fill="none" stroke-linecap="round"><path d="M478 112V36M478 112H546" stroke="#0ea5c9"/><path d="M478 112L522 70" stroke="#f59e0b"/></g>
+        <path d="M478 30l-5 9h10zM552 112l-9-5v10z" fill="#0ea5c9"/><path d="M526 66l-11 3 8 8z" fill="#f59e0b"/>
+        <g font-family="STIX Two Text,Georgia,serif" font-style="italic"><text x="486" y="48" font-size="20" fill="#1f2b4d">F</text><text x="528" y="66" font-size="20" fill="#1f2b4d">v</text></g>
+        <!-- формулы -->
+        <g font-family="STIX Two Text,Georgia,serif" font-style="italic">
+          <text x="30" y="64" font-size="36" fill="#1f2b4d">F = ma</text>
+          <text x="150" y="110" font-size="26" fill="#1f2b4d">ρ = m / V</text>
+          <text x="30" y="150" font-size="22" fill="#0b6f87">F = 6πηRυ</text>
+          <text x="430" y="368" font-size="28" fill="#1f2b4d">E = mc²</text>
+          <text x="30" y="362" font-size="17" fill="#55657d">η = 2(ρ − ρ₀)gR² / 9υ</text>
+        </g>
+      </svg>
+    </div>
+  </div></div>
+
+  <div class="in">
+    <div class="sect">
+      <h2><svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="#0e8fae" stroke-width="2"><ellipse cx="24" cy="24" rx="20" ry="7.5"/><ellipse cx="24" cy="24" rx="20" ry="7.5" transform="rotate(60 24 24)" stroke="#7c5cd6"/><ellipse cx="24" cy="24" rx="20" ry="7.5" transform="rotate(120 24 24)" stroke="#c026d3"/></g><circle cx="24" cy="24" r="4" fill="#fbbf24"/></svg>Выбери свой класс</h2>
+      <button class="strip" data-nav="prog" aria-label="Открыть мой прогресс">
+        <svg class="fl" viewBox="0 0 32 32" fill="none" stroke="#0e8fae" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4h8M13 4v8L6 25a2.5 2.5 0 0 0 2.2 3.5h15.6A2.5 2.5 0 0 0 26 25l-7-13V4M9 20h14"/></svg>
+        <b>Твой научный прогресс</b>
+        <svg class="ch" viewBox="0 0 18 18" fill="none" stroke="#55657d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l6 6-6 6"/></svg>
+        <small id="pgTxt">0 / 5 выполнено</small>
+        <span class="bar2"><i id="pgBar"></i></span>
+      </button>
+    </div>
+    <div class="cards" id="grades"></div>
+    <p class="quote">Физика — это не просто формулы, это ключ к пониманию мира<i></i></p>
+  </div>
+</div>
+
+<div id="labs" class="view in pad" hidden>
+  <h1>Лаборатории</h1>
+  <p class="sub">Все лабораторные работы по классам</p>
+  <div id="alllabs"></div>
+</div>
+
+<div id="prog" class="view in pad" hidden></div>
+
+<div id="grade" class="view in pad" hidden><button class="back" data-v="home">← Все классы</button><h1 id="gt"></h1><div id="labslist"></div></div>
+
+<div id="lab" class="view in pad" hidden>
+<button class="back" id="backLab">← К списку лабораторных</button>
+<h1>Лабораторная работа № 1</h1>
+<div class="who"><label><b>Фамилия и имя ученика *</b> <input type="text" id="nm" placeholder="Например: Иванов Али, 10 «A»" autocomplete="name"></label></div>
+<p class="sub">Исследование движения шарика в жидкостях различной вязкости · Физика, 10 класс · Приложение 1</p>
+
+<nav class="tabs" id="nav"><button class="p" data-go="th">Теория</button><button data-go="pr">Практика</button><button data-go="ev">Оценивание</button></nav>
+<div id="th" class="pg">
+<section><h2>Цель и оборудование</h2>
+<p><b>Цель:</b> исследовать, как установившаяся скорость шарика зависит от вязкости жидкости, и определить вязкость глицерина.</p>
+<p><b>Оборудование:</b> три пробирки высотой 25 см с метками (верхняя метка ниже края пробирки), жидкости (растительное масло, моторное масло, глицерин), металлические шарики (алюминий, сталь, латунь, медь) диаметром 0,8–1,2 мм, секундомер.</p></section>
+
+<section><h2>Краткая теория</h2>
+<p>На шарик, падающий в вязкой жидкости, действуют сила тяжести, сила Архимеда и сила сопротивления. При установившемся движении скорость постоянна, поэтому F<sub>т</sub> = F<sub>А</sub> + F<sub>с</sub>, где F<sub>т</sub> = ρ<sub>т</sub>·<span class="fr"><span>4</span><span>3</span></span>·πR³·g, F<sub>А</sub> = ρ<sub>ж</sub>·<span class="fr"><span>4</span><span>3</span></span>·πR³·g, F<sub>с</sub> = 6πηRυ. Отсюда:</p>
+<div class="eq">υ = <span class="fr"><span>2(ρ<sub>т</sub> − ρ<sub>ж</sub>)·g·R²</span><span>9η</span></span> (1) &nbsp;&nbsp; η = <span class="fr"><span>2(ρ<sub>т</sub> − ρ<sub>ж</sub>)·g·R²</span><span>9υ</span></span> (2)</div>
+<div class="scroll"><table><tr><th>ρ<sub>т</sub> шарика</th><th>ρ<sub>ж</sub> раст. масла</th><th>ρ<sub>ж</sub> мотор. масла</th><th>ρ<sub>ж</sub> глицерина</th><th>d шарика</th><th>g</th><th>T опыта</th></tr>
+<tr><td>алюминий 2700, сталь 7800, латунь 8500, медь 8900 кг/м³</td><td>920 кг/м³</td><td>880 кг/м³</td><td>1261 кг/м³</td><td>0,8–1,2 мм (выбирается)</td><td>9,8 м/с²</td><td>20 °C</td></tr></table></div></section>
+
+<section><h2>Вязкость и закон Стокса</h2>
+<p><b>Внутреннее трение.</b> Соседние слои жидкости движутся с разной скоростью и тормозят друг друга. Вязкость η показывает, насколько сильно жидкость сопротивляется такому течению. Единица вязкости: Па·с (1 Па·с = 1000 мПа·с).</p>
+<p><b>Когда верен закон Стокса.</b> Формула F<sub>с</sub> = 6πηRυ работает при медленном ламинарном обтекании шарика, когда число Рейнольдса Re = <span class="fr"><span>ρ<sub>ж</sub>υd</span><span>η</span></span> не больше примерно 1. В нашем опыте шарик маленький и движется медленно, поэтому это условие выполняется.</p>
+<p><b>Температура.</b> Вязкость жидкостей заметно убывает при нагревании, поэтому результат нужно сравнивать с табличным значением при температуре опыта.</p></section>
+<section><h2>Пример расчёта</h2>
+<p>Пусть стальной шарик диаметром 1,0 мм прошёл h = 0,100 м за t = 40 с в глицерине (ρ<sub>ж</sub> = 1261 кг/м³), R = 0,5 мм = 5·10<sup>−4</sup> м.</p>
+<p>1) υ = <span class="fr"><span>h</span><span>t</span></span> = <span class="fr"><span>0,100</span><span>40</span></span> = 2,5·10<sup>−3</sup> м/с.</p>
+<p>2) η = <span class="fr"><span>2·(7800 − 1261)·9,8·(5·10<sup>−4</sup>)²</span><span>9·2,5·10<sup>−3</sup></span></span> ≈ 1,42 Па·с ≈ 1420 мПа·с.</p></section>
+<section><h2>Порядок работы</h2>
+<ol><li>Выберите предположение о вязкости жидкостей.</li><li>Опустите шарик в пробирку, засеките время между двумя метками.</li><li>Рассчитайте скорость υ = <span class="fr"><span>h</span><span>t</span></span> и вязкость по формуле (2).</li><li>Найдите среднее значение, погрешности и запишите результат для глицерина.</li></ol>
+<div class="row"><button class="p" data-go="pr">Перейти к практике →</button></div></section>
+</div>
+
+<div id="pr" class="pg" hidden>
+<section id="setup"><h2>Установка</h2><p class="sub">Задание 1 выполняется при 20 °C.</p></section>
+<section><h2>Задание 1. Зависимость скорости шарика от вязкости</h2>
+<p><b>Шаг 1.</b> Предположите, как расположатся жидкости по возрастанию вязкости:</p>
+<div class="row" id="pred"></div>
+<p><b>Шаги 2–4.</b> Выберите пробирку, опустите шарик, включите секундомер, когда шарик проходит верхнюю метку, и остановите на нижней. Запишите опыт. Сделайте по 5 опытов для каждой жидкости.</p>
+<div id="sim"><svg id="sv" viewBox="0 0 450 345" role="img" aria-label="Три пробирки с жидкостями"></svg>
+<div class="row" id="tabs"></div>
+<div class="row ctl"><button class="p" id="drop">Опустить шарик</button><span id="sw">0,00 с</span><button id="swb">Старт</button><button id="swr">Сброс</button><button class="p" id="rec">Записать опыт</button>
+<label>Материал шарика <select id="mat"><option value="0">алюминий (2700 кг/м³)</option><option value="1" selected>сталь (7800 кг/м³)</option><option value="2">латунь (8500 кг/м³)</option><option value="3">медь (8900 кг/м³)</option></select></label>
+<label>Диаметр шарика <select id="dia"><option>0.8</option><option>0.9</option><option selected>1.0</option><option>1.1</option><option>1.2</option></select> мм</label>
+<div style="flex-basis:100%;color:var(--mut);font-size:.85rem">Материал и диаметр шарика — контролируемые величины: для одной жидкости не меняйте их. У тяжёлого крупного шарика в маловязком масле закон Стокса выполняется хуже.</div>
+<label>Скорость времени <select id="sp"><option>0.25</option><option>0.5</option><option>1</option><option>2</option><option>5</option><option>10</option></select></label></div>
+<div id="msg"></div></div>
+<div class="scroll"><table><thead><tr><th>Жидкость</th><th>№</th><th>t, с</th><th>h, м</th><th>υ, м/с</th><th>η, мПа·с</th><th>υ<sub>ср</sub>, м/с</th></tr></thead><tbody id="tb"></tbody></table></div>
+<p style="color:var(--mut);font-size:.9rem;margin:.4em 0">Нажмите на вычисленное значение (υ, η, υ<sub>ср</sub>) в таблице, чтобы увидеть, как оно считается.</p><div class="how" id="how1" hidden></div>
+<div class="row"><button id="clr">Очистить таблицу</button></div>
+<div class="res" id="res1">Выполните опыты, чтобы увидеть сравнение с предположением.</div></section>
+
+<section><h2>Задание 2. Вязкость глицерина</h2>
+<p>Вязкость в каждом опыте считается по формуле (2) (столбец η). Найдите среднее значение, абсолютную и относительную погрешности (среднее абсолютное отклонение), запишите результат и сравните с табличным значением.</p>
+<div class="how" style="margin:10px 0"><b>Как считается</b>
+<div class="eq2">1) Среднее значение: η̄ = <span class="fr"><span>η<sub>1</sub> + η<sub>2</sub> + … + η<sub>n</sub></span><span>n</span></span></div>
+<div class="eq2">2) Абсолютная погрешность (среднее абсолютное отклонение): Δη = <span class="fr"><span>|η<sub>1</sub> − η̄| + … + |η<sub>n</sub> − η̄|</span><span>n</span></span></div>
+<div class="eq2">3) Относительная погрешность: ε = <span class="fr"><span>Δη</span><span>η̄</span></span>·100%</div>
+<div class="eq2">4) Результат: η = η̄ ± Δη. Δη округляют до одной значащей цифры, η̄ до того же разряда.</div>
+<div class="eq2">5) Отклонение от табличного значения: δ = <span class="fr"><span>|η̄ − η<sub>табл</sub>|</span><span>η<sub>табл</sub></span></span>·100%</div>
+<p style="color:var(--mut);font-size:.9rem;margin:.4em 0 0">η<sub>1</sub>, …, η<sub>n</sub> — значения вязкости глицерина из таблицы задания 1, n — число опытов с глицерином.</p></div>
+<div class="res" id="res2">Нужно минимум 2 опыта с глицерином.</div></section>
+
+<section><h2>Задание 3. Анализ эксперимента</h2><p class="sub">По целям обучения 10.1.5.2 и 10.1.5.3. Заполните по результатам заданий 1–2.</p>
+<p><b>1. Независимая величина:</b> что вы изменяли в опытах?</p><textarea class="tx" style="min-height:56px"></textarea>
+<p><b>2. Зависимая величина:</b> что вы измеряли и вычисляли?</p><textarea class="tx" style="min-height:56px"></textarea>
+<p><b>3. Контролируемые (постоянные) величины:</b> что оставалось неизменным?</p><textarea class="tx" style="min-height:56px"></textarea>
+<p><b>4. Точность измерений:</b> цена деления и погрешность секундомера и линейки.</p><textarea class="tx" style="min-height:56px"></textarea>
+<p><b>5. Факторы, влияющие на результат:</b> как каждый из них изменяет результат (завышает или занижает)?</p><textarea class="tx" style="min-height:56px"></textarea>
+<p><b>6. Пути улучшения эксперимента:</b> почему они уменьшат погрешность?</p><textarea class="tx" style="min-height:56px"></textarea></section>
+<section><h2>Вывод и контрольные вопросы</h2>
+<p><b>Вывод по работе:</b></p><textarea class="tx" placeholder="Сравните результаты с предположением и формулой (1)"></textarea>
+<ol id="qs"></ol>
+<div class="row"><button class="p" id="sv0">Сохранить ответы</button><button id="rs">Начать заново</button></div><div class="note" id="svm0"></div>
+<p class="sub">Модель: закон Стокса; поправки на стенки пробирки не учитываются. Шарики и жидкости немного различаются от опыта к опыту, как в реальной работе.</p></section>
+<div class="row"><button data-go="th">← К теории</button></div></div>
+
+<div id="ev" class="pg" hidden>
+<section><h2>Цели обучения</h2><ul><li><b>10.1.5.2</b> — определять зависимые, независимые и контролируемые (постоянные) физические величины и учитывать точность измерений;</li><li><b>10.1.5.3</b> — определять факторы, влияющие на результат эксперимента, и предлагать пути его улучшения.</li></ul>
+<p class="sub">Оценивается работа в заданиях 1–3. Отметьте выполненные дескрипторы: каждый даёт 1 балл.</p></section>
+<section><h2>Критерии оценивания и дескрипторы</h2>
+<div class="scroll"><table class="cr"><thead><tr><th>Критерий оценивания</th><th>Дескриптор. Обучающийся:</th><th>Балл</th></tr></thead><tbody>
+<tr><td rowspan="5"><b>10.1.5.2</b> Определяет зависимые, независимые и контролируемые величины, учитывает точность измерений</td><td>определяет независимую величину (вязкость жидкости);</td><td><label><input type="checkbox" class="ds"> 1</label></td></tr>
+<tr><td>определяет зависимые величины (время падения, скорость шарика, вязкость);</td><td><label><input type="checkbox" class="ds"> 1</label></td></tr>
+<tr><td>называет не менее трёх контролируемых (постоянных) величин (диаметр и материал шарика, расстояние h между метками, температура опыта);</td><td><label><input type="checkbox" class="ds"> 1</label></td></tr>
+<tr><td>указывает цену деления и погрешность измерительных приборов (секундомер, линейка);</td><td><label><input type="checkbox" class="ds"> 1</label></td></tr>
+<tr><td>записывает результат с учётом погрешности (η = η̄ ± Δη) с правильным округлением.</td><td><label><input type="checkbox" class="ds"> 1</label></td></tr>
+<tr><td rowspan="4"><b>10.1.5.3</b> Определяет факторы, влияющие на результат эксперимента, и предлагает пути его улучшения</td><td>называет не менее двух факторов, влияющих на результат (момент включения и остановки секундомера, разброс диаметров шариков, температура, влияние стенок пробирки);</td><td><label><input type="checkbox" class="ds"> 1</label></td></tr>
+<tr><td>объясняет, как каждый названный фактор влияет на результат (завышает или занижает значение);</td><td><label><input type="checkbox" class="ds"> 1</label></td></tr>
+<tr><td>предлагает не менее двух путей улучшения эксперимента (больше опытов, шарики одного диаметра, термостатирование, большее расстояние h);</td><td><label><input type="checkbox" class="ds"> 1</label></td></tr>
+<tr><td>обосновывает, как предложенное улучшение уменьшит погрешность.</td><td><label><input type="checkbox" class="ds"> 1</label></td></tr>
+</tbody></table></div>
+<p><b>Итого: <span id="sc">0 из 9</span></b></p>
+<h2 style="margin-top:1.2em">Сохранение результатов</h2>
+<p>Впишите фамилию и имя в начале страницы, оцените себя и нажмите «Сохранить результаты». Затем загрузите сохранённый файл в папку учителя на Google Диске.</p>
+<div class="row"><button class="p" id="sv2">Сохранить результаты</button><a class="btn" href="https://drive.google.com/drive/folders/1nitqlOFpdgvOg_QAALjkr3KfC1BZD5yV?usp=sharing" target="_blank" rel="noopener">Открыть папку на Google Диске</a></div><div class="note" id="svm"></div>
+<p class="sub">Дескрипторы составлены как пример к этой работе; при необходимости адаптируйте под вашу шкалу.</p></section></div></div>
+</main>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],G=9.8,H=.1,TOP=2,M1=6,TU=25,X=[80,210,340],Y0=20,S=12,y=c=>Y0+c*S;
+let RT=7800,R0=.0005,MN='сталь';
+const L=[{n:'Растительное масло',rho:920,eta:65,col:'#f6c945',sp:.5},{n:'Моторное масло',rho:880,eta:200,col:'#d9772b',sp:1},{n:'Глицерин',rho:1261,eta:1412,col:'#67e8f9',sp:5}];
+const f=(x,p=3)=>(+x).toPrecision(p).replace('.',','),KEY='lab1_v2';
+let rows=[[],[],[]],cur=2,sw=0,run=false,fall=false,simT=0,yb=TOP,ball=null,last=0,curView='home',backTo='grade';
+const gauss=()=>Math.sqrt(-2*Math.log(1-Math.random()))*Math.cos(6.2832*Math.random());
+
+/* секундомер на главной */
+(()=>{let s='';for(let i=0;i<60;i++){const a=i*6*Math.PI/180,r1=i%5?47:42,r2=50,cx=490,cy=252;s+=`<line x1="${(cx+r1*Math.sin(a)).toFixed(1)}" y1="${(cy-r1*Math.cos(a)).toFixed(1)}" x2="${(cx+r2*Math.sin(a)).toFixed(1)}" y2="${(cy-r2*Math.cos(a)).toFixed(1)}" stroke="${i%5?'#94a3b8':'#1e293b'}" stroke-width="${i%5?1:2}"/>`}$('#ticks').innerHTML=s})();
+
+/* установка: пробирки */
+let sv='<defs><radialGradient id="s-ball" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#e2e8f0"/><stop offset=".45" stop-color="#64748b"/><stop offset="1" stop-color="#0f172a"/></radialGradient>';
+L.forEach((l,i)=>sv+=`<linearGradient id="s-lq${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${l.col}" stop-opacity=".5"/><stop offset="1" stop-color="${l.col}" stop-opacity=".95"/></linearGradient>`);
+sv+='</defs>';
+L.forEach((l,i)=>{const x=X[i],b=y(TU);sv+=`<g class="tb" data-i="${i}"><rect x="${x-60}" y="0" width="120" height="${b+40}" fill="transparent"/><path d="M${x-20} ${y(TOP)}H${x+20}V${b-20}a20 20 0 0 1 -40 0Z" fill="url(#s-lq${i})"/><path class="glass" d="M${x-20} ${Y0}V${b-20}a20 20 0 0 0 40 0V${Y0}"/><line x1="${x-13}" x2="${x-13}" y1="${y(TOP)+10}" y2="${b-24}" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round"/><line class="mk" x1="${x-28}" x2="${x+28}" y1="${y(M1)}" y2="${y(M1)}"/><line class="mk" x1="${x-28}" x2="${x+28}" y1="${y(M1+H*100)}" y2="${y(M1+H*100)}"/><text x="${x+32}" y="${y(M1)+4}">метка 1</text><text x="${x+32}" y="${y(M1+H*100)+4}">метка 2</text><text x="${x+32}" y="${y(M1+H*50)+4}">h = 10,0 см</text><text class="tn" x="${x}" y="${b+22}" text-anchor="middle">${l.n}</text></g>`});
+$('#sv').innerHTML=sv+'<circle id="ball" r="3.5" fill="url(#s-ball)" stroke="#1e293b" stroke-opacity=".6" stroke-width=".6" display="none"/>';
+function pick(i){cur=i;$$('.tb').forEach((g,k)=>g.classList.toggle('sel',k==i));$$('#tabs button').forEach((b,k)=>b.classList.toggle('p',k==i));$('#sp').value=L[i].sp;reset()}
+function reset(){sw=0;run=false;fall=false;$('#swb').textContent='Старт';$('#ball').setAttribute('display','none');$('#msg').textContent=''}
+L.forEach((l,i)=>{const b=document.createElement('button');b.textContent=l.n;b.onclick=()=>pick(i);$('#tabs').append(b)});
+$$('.tb').forEach(g=>g.onclick=()=>pick(+g.dataset.i));
+['1 (самая текучая)','2','3 (самая вязкая)'].forEach(t=>{const s=document.createElement('select');s.className='pr';s.setAttribute('aria-label','Предположение: место '+t);s.innerHTML='<option value="">'+t+'</option>'+L.map((l,i)=>`<option value="${i}">${l.n}</option>`).join('');$('#pred').append(s)});
+['Каков механизм внутреннего трения в жидкостях с точки зрения молекулярно-кинетической теории?','Как вязкость жидкости зависит от температуры и чем это объясняется?','Почему время падения шарика отсчитывают не от поверхности жидкости, а от метки, достаточно удалённой от неё?'].forEach((q,i)=>{const li=document.createElement('li');li.innerHTML=q+'<textarea class="tx"></textarea>';$('#qs').append(li)});
+const MT=[{n:'алюминий',rho:2700,col:'#c4c8cc'},{n:'сталь',rho:7800,col:'#8a9096'},{n:'латунь',rho:8500,col:'#cfa83a'},{n:'медь',rho:8900,col:'#c0713a'}];
+const pb=e=>(e.m||'сталь')+', '+((e.R||.0005)*2000).toFixed(1).replace('.',',')+' мм';
+const setBall=()=>{const m=MT[+$('#mat').value];RT=m.rho;MN=m.n;R0=+$('#dia').value/2000;$('#ball').setAttribute('r',(3.5*R0/.0005).toFixed(2));$('#ball').setAttribute('fill',m.col);reset()};
+$('#mat').onchange=$('#dia').onchange=setBall;
+$('#drop').onclick=()=>{const R=R0*(1+.015*gauss()),e=L[cur].eta*(1+.01*gauss());ball={v:2*(RT-L[cur].rho)*G*R*R/(9*e*1e-3),x:X[cur]};simT=0;yb=TOP;fall=true;$('#ball').setAttribute('display','')};
+$('#swb').onclick=()=>{run=!run;$('#swb').textContent=run?'Стоп':'Старт'};
+$('#swr').onclick=reset;
+$('#rec').onclick=()=>{const m=$('#msg');if(run)return m.textContent='Сначала остановите секундомер.';if(sw<=0)return m.textContent='Секундомер показывает 0.';if(rows[cur].length>=5)return m.textContent='Для этой жидкости уже 5 опытов. Удалите лишний (×).';const v=H/sw;rows[cur].push({t:sw,v,rt:RT,R:R0,m:MN,eta:2*(RT-L[cur].rho)*G*R0*R0/(9*v)*1000});reset();m.textContent='Опыт записан.';draw()};
+$('#tb').onclick=e=>{const b=e.target.closest('.x');if(b){rows[b.dataset.k].splice(b.dataset.j,1);draw()}};
+$('#clr').onclick=()=>{rows=[[],[],[]];draw()};
+const cc=(e,w,k,j,t)=>`<td${e?` class="calc" tabindex="0" role="button" data-w="${w}" data-k="${k}" data-j="${j}" title="Нажмите, чтобы увидеть расчёт"`:''}>${t}</td>`;
+const FR=(n,d)=>`<span class="fr"><span>${n}</span><span>${d}</span></span>`,n2=x=>String(+(+x).toFixed(2)).replace('.',','),
+sci=x=>{const [a,b]=x.toExponential(2).split('e');return a.replace('.',',')+'·10<sup>'+(+b<0?'−':'')+Math.abs(+b)+'</sup>'};
+const etaHow=(rho,v,eta,rt,R)=>{const num=2*(rt-rho)*G*R*R;return `<p>Вязкость по формуле (2):</p><div class="eq2">η = ${FR('2·(ρ<sub>т</sub> − ρ<sub>ж</sub>)·g·R²','9·υ')}</div><p>Подставляем ρ<sub>т</sub> = ${rt} кг/м³, ρ<sub>ж</sub> = ${n2(rho)} кг/м³, g = 9,8 м/с², R = ${n2(R*1000)} мм = ${sci(R)} м, υ = ${f(v)} м/с:</p><div class="eq2">η = ${FR(`2·(${rt} − ${n2(rho)})·9,8·(${sci(R)})²`,`9·${f(v)}`)} = ${FR(sci(num),f(9*v))} ≈ ${f(eta/1000,3)} Па·с = <b>${f(eta,4)} мПа·с</b></div><p>1 Па·с = 1000 мПа·с.</p>`};
+const vHow=r=>`<p>Скорость шарика между метками:</p><div class="eq2">υ = ${FR('h','t')} = ${FR('0,100 м',f(r.t)+' с')} = <b>${f(r.v)} м/с</b></div>`;
+function how(el){const w=el.dataset.w,k=+el.dataset.k,j=+el.dataset.j;let h,r=rows[k]&&rows[k][j];
+if(w=='vm'){const a=rows[k],m=a.reduce((s,x)=>s+x.v,0)/a.length;h=`<p>Средняя скорость для «${L[k].n}»:</p><div class="eq2">υ<sub>ср</sub> = ${FR('υ<sub>1</sub> + … + υ<sub>n</sub>','n')} = ${FR(a.map(x=>f(x.v)).join(' + '),a.length)} = <b>${f(m)} м/с</b></div>`}
+else if(!r)return;
+else if(w=='v')h=vHow(r);
+else if(w=='eta')h=etaHow(L[k].rho,r.v,r.eta,r.rt||7800,r.R||.0005);
+document.querySelectorAll('.calc.on').forEach(c=>c.classList.remove('on'));el.classList.add('on');
+const p=$('#how1');p.innerHTML='<button class="x" data-hc="1" title="Закрыть">×</button><b>Как считается</b>'+h;p.hidden=false;p.scrollIntoView({block:'nearest',behavior:'smooth'})}
+document.addEventListener('click',e=>{const c=e.target.closest('.calc');if(c)return how(c);const x=e.target.closest('[data-hc]');if(x){x.closest('.how').hidden=true;document.querySelectorAll('.calc.on').forEach(c=>c.classList.remove('on'))}});
+document.addEventListener('keydown',e=>{const c=e.target.closest&&e.target.closest('.calc');if(c&&(e.key=='Enter'||e.key==' ')){e.preventDefault();how(c)}});
+function draw(){$('#how1').hidden=true;let h='';L.forEach((l,i)=>{const r=rows[i],m=r.length?r.reduce((a,b)=>a+b.v,0)/r.length:0;for(let j=0;j<5;j++){const e=r[j];h+='<tr>'+(j?'':`<td rowspan=5 class=nm>${l.n}</td>`)+`<td>${j+1}${e?` <button class=x data-k=${i} data-j=${j} title="Удалить опыт">×</button><br><small>${pb(e)}</small>`:''}</td><td>${e?f(e.t):''}</td><td>${e?'0,100':''}</td>${cc(e,'v',i,j,e?f(e.v):'')}${cc(e,'eta',i,j,e?f(e.eta,4):'')}`+(j?'':`<td rowspan=5${m?` class="calc" tabindex="0" role="button" data-w="vm" data-k="${i}" title="Нажмите, чтобы увидеть расчёт"`:''}>${m?f(m):''}</td>`)+'</tr>'}});$('#tb').innerHTML=h;sum();save()}
+function sum(){const ok=rows.every(r=>r.length>=3),p=$$('.pr').map(s=>s.value);
+if(!ok)$('#res1').textContent='Сделайте минимум по 3 опыта для каждой жидкости, чтобы сравнить результат с предположением.';else{const mv=rows.map(r=>r.reduce((a,b)=>a+b.v,0)/r.length),ord=[0,1,2].sort((a,b)=>mv[b]-mv[a]),same=p.every((v,k)=>v!==''&&+v===ord[k]);$('#res1').innerHTML='По результатам опытов вязкость возрастает так: <b>'+ord.map(i=>L[i].n).join(' → ')+'</b> (чем меньше скорость, тем больше вязкость, формула (1)).<br>'+(p.every(v=>v!=='')?(same?'Ваше предположение подтвердилось.':'Ваше предположение не совпало с опытом. Объясните причину в выводе.'):'Выберите предположение в шаге 1, чтобы сравнить.')}
+const g=rows[2],n=g.length;if(n<2)return $('#res2').textContent='Нужно минимум 2 опыта с глицерином.';
+const m=g.reduce((a,b)=>a+b.eta,0)/n,d=g.reduce((a,b)=>a+Math.abs(b.eta-m),0)/n;if(!d)return;
+const e=Math.floor(Math.log10(d)),q=10**e,dec=Math.max(0,-e),mm=(Math.round(m/q)*q).toFixed(dec).replace('.',','),dd=(Math.round(d/q)*q).toFixed(dec).replace('.',','),T=1412;
+const FT=(a,b,tt)=>`<span class="fr" data-t="${tt}"><span>${a}</span><span>${b}</span></span>`,lst=g.map(x=>f(x.eta,4)).join(' + '),dev=g.map(x=>'|'+f(x.eta,4)+' − '+f(m,4)+'|').join(' + '),del=Math.abs(m-T)/T*100;
+$('#res2').innerHTML=`<p>1) Среднее значение:</p><div class="eq2">η̄ = ${FT('η<sub>1</sub> + … + η<sub>n</sub>','n','(η1+…+ηn)/n')} = ${FT(lst,n,'('+lst+')/'+n)} = <b>${f(m,4)} мПа·с</b></div><p>2) Абсолютная погрешность (среднее абсолютное отклонение):</p><div class="eq2">Δη = ${FT('|η<sub>1</sub> − η̄| + … + |η<sub>n</sub> − η̄|','n','(|η1−η̄|+…+|ηn−η̄|)/n')} = ${FT(dev,n,'('+dev+')/'+n)} = <b>${f(d,3)} мПа·с</b></div><p>3) Относительная погрешность:</p><div class="eq2">ε = ${FT('Δη','η̄','Δη/η̄')}·100% = ${FT(f(d,3),f(m,4),f(d,3)+'/'+f(m,4))}·100% = <b>${f(d/m*100,2)} %</b></div><p>4) Результат:</p><div class="eq2"><b>η = (${mm} ± ${dd}) мПа·с</b> (n = ${n})</div><p>5) Сравнение с табличным значением при 20 °C (≈ ${T} мПа·с):</p><div class="eq2">δ = ${FT('|η̄ − η<sub>табл</sub>|','η<sub>табл</sub>','|η̄−ηтабл|/ηтабл')}·100% = ${FT('|'+f(m,4)+' − '+T+'|',T,'|'+f(m,4)+' − '+T+'|/'+T)}·100% = <b>${f(del,2)} %</b></div><p>`+(Math.abs(m-T)<=d?'Табличное значение попадает в полученный интервал.':'Табличное значение не попадает в интервал. Обсудите возможные причины (погрешность секундомера, диаметр шарика, температура).')+'</p>'}
+function save(){try{sessionStorage.setItem(KEY,JSON.stringify({rows,n:$('#nm').value,p:$$('.pr').map(e=>e.value),t:$$('.tx').map(e=>e.value),c:$$('.ds').map(e=>e.checked)}))}catch(e){}prog()}
+try{localStorage.removeItem(KEY)}catch(e){}
+try{const s=JSON.parse(sessionStorage.getItem(KEY)||'null');if(s){rows=s.rows;$('#nm').value=s.n||'';$$('.pr').forEach((e,i)=>e.value=s.p[i]||'');$$('.tx').forEach((e,i)=>e.value=s.t[i]||'');$$('.ds').forEach((e,i)=>e.checked=!!(s.c&&s.c[i]));$('#sc').textContent=$$('.ds').filter(x=>x.checked).length+' из '+$$('.ds').length}}catch(e){}
+document.addEventListener('input',()=>{sum();save()});
+function loop(ts){const dt=Math.min((ts-last)/1e3,.1),s=+$('#sp').value;last=ts;if(run)sw+=dt*s;
+if(fall){simT+=dt*s;yb=TOP+ball.v*100*simT;if(yb>=TU-.5){yb=TU-.5;fall=false}}
+if(ball){const b=$('#ball');b.setAttribute('cx',ball.x);b.setAttribute('cy',y(yb))}
+$('#sw').textContent=sw.toFixed(2).replace('.',',')+' с';requestAnimationFrame(loop)}
+$('#setup').append($('#sim'));
+/* каталог классов и работ */
+const LABS={7:[],8:[],9:[],10:[{t:'№ 1. Исследование движения шарика в жидкостях различной вязкости',ok:1},{t:'№ 2. Исследование условия возникновения тока в электролитах'}],11:[]};
+const pl=(n,a,b,c)=>n%10==1&&n%100!=11?a:[2,3,4].includes(n%10)&&![12,13,14].includes(n%100)?b:c;
+const LOCK='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>';
+const PLAY='<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.5l10 5.5-10 5.5z"/></svg>';
+const ARR='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 2l6 6-6 6"/></svg>';
+const ICO={
+ atom:c=>`<g fill="none" stroke="${c}" stroke-width="2.2"><ellipse cx="48" cy="36" rx="34" ry="12"/><ellipse cx="48" cy="36" rx="34" ry="12" transform="rotate(60 48 36)"/><ellipse cx="48" cy="36" rx="34" ry="12" transform="rotate(120 48 36)"/></g><circle cx="48" cy="36" r="6" fill="#fbbf24"/><circle cx="82" cy="36" r="3" fill="${c}"/>`,
+ magnet:c=>`<path d="M26 56V34a22 22 0 0 1 44 0v22" fill="none" stroke="${c}" stroke-width="12"/><rect x="20" y="50" width="12" height="12" fill="#f43f5e"/><rect x="64" y="50" width="12" height="12" fill="#60a5fa"/><path d="M80 12l-6 9h8l-6 9M16 12l4 7M88 32l6-3" stroke="#fbbf24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+ prism:c=>`<path d="M48 8L76 58H20Z" fill="rgba(255,255,255,.6)" stroke="${c}" stroke-width="2.2" stroke-linejoin="round"/><path d="M2 46L38 38" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>`+['#ef4444','#f59e0b','#facc15','#22c55e','#38bdf8','#8b5cf6'].map((k,i)=>`<path d="M62 42L94 ${34+i*5.5}" stroke="${k}" stroke-width="2.4" stroke-linecap="round"/>`).join(''),
+ pend:c=>`<path d="M28 6H88" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/><g stroke="#94a3b8" stroke-width="1.4"><path d="M40 6L12 47M52 6V50M64 6V50M76 6V50"/></g><circle cx="12" cy="47" r="6.5" fill="#fbbf24"/><g fill="#8c9bb5"><circle cx="52" cy="56" r="6.5"/><circle cx="64" cy="56" r="6.5"/><circle cx="76" cy="56" r="6.5"/></g><path d="M18 62Q40 70 62 66" fill="none" stroke="${c}" stroke-opacity=".5" stroke-width="2"/>`,
+ nuc:c=>`<g fill="none" stroke="${c}" stroke-width="2"><ellipse cx="48" cy="36" rx="36" ry="13"/><ellipse cx="48" cy="36" rx="36" ry="13" transform="rotate(60 48 36)"/><ellipse cx="48" cy="36" rx="36" ry="13" transform="rotate(120 48 36)"/></g><g><circle cx="44" cy="32" r="5" fill="#f472b6"/><circle cx="53" cy="34" r="5" fill="#a78bfa"/><circle cx="48" cy="41" r="5" fill="#f472b6"/><circle cx="41" cy="40" r="4.5" fill="#a78bfa"/></g><g fill="#475569"><circle cx="84" cy="36" r="2.6"/><circle cx="30" cy="20" r="2.6"/><circle cx="30" cy="53" r="2.6"/></g>`};
+const GR=[[7,'#38bdf8',ICO.atom,'Открой законы механики и движения'],[8,'#a78bfa',ICO.magnet,'Изучай магнетизм и электричество'],[9,'#2dd4bf',ICO.prism,'Исследуй свет и оптику'],[10,'#fbbf24',ICO.pend,'Изучай вязкость жидкостей и электрический ток'],[11,'#818cf8',ICO.nuc,'Исследуй атомы и ядерную физику']];
+$('#grades').innerHTML=GR.map(([g,c,ic,d])=>{const n=LABS[g].filter(l=>l.ok).length;return `<button class="card${n?' on':''}" style="--c:${c}" data-g="${g}"><svg class="ci" viewBox="0 0 96 72" aria-hidden="true">${ic(c)}</svg><span class="cg">${g} класс</span><span class="pill">${n?PLAY+n+' '+pl(n,'лабораторная работа','лабораторные работы','лабораторных работ'):LOCK+'Скоро'}</span><span class="cd">${d}</span></button>`}).join('');
+const labBtn=(g,a)=>a.map((l,i)=>`<button class="lc" data-lab="${g}-${i}" ${l.ok?'':'disabled'}><span class="bd">${g} кл.</span><span>${l.t}${l.ok?'':'<small>скоро</small>'}</span>${l.ok?ARR:''}</button>`).join('');
+function renderLabs(){$('#alllabs').innerHTML=Object.keys(LABS).map(g=>{const a=LABS[g];return `<h2 class="gh">${g} класс</h2>`+(a.length?labBtn(g,a):'<p class="sub">Лабораторные работы появятся позже.</p>')}).join('')}
+renderLabs();
+
+/* прогресс */
+const UI='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="7" r="3.5"/><path d="M3 18c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg>';
+function prog(){
+  const nm=$('#nm').value.trim(),tx=$$('.tx'),sc=$$('.ds').filter(x=>x.checked).length;
+  const st=[['Задание 1. Опыты с тремя жидкостями',rows.every(r=>r.length>=3)],['Задание 2. Вязкость глицерина',rows[2].length>=2],['Задание 3. Анализ эксперимента',tx.slice(0,6).every(t=>t.value.trim().length>=3)],['Самооценивание по дескрипторам',sc>0]];
+  const k=st.filter(s=>s[1]).length;
+  $('#pgTxt').textContent=k+' / 4 выполнено';$('#pgBar').style.width=k*25+'%';
+  $('#av').innerHTML=nm?nm[0].toUpperCase():UI;
+  const C=2*Math.PI*50;
+  $('#prog').innerHTML=`<h1>Мой прогресс</h1><p class="sub">${nm?nm+' · Лабораторная работа № 1':'Впишите фамилию и имя в лабораторной работе, чтобы они попали в отчёт.'}</p>
+  <div class="pgrid"><svg class="ring" viewBox="0 0 120 120" role="img" aria-label="Выполнено ${k} из 4"><defs><linearGradient id="p-rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#e879f9"/></linearGradient></defs><circle cx="60" cy="60" r="50" fill="none" stroke="var(--line)" stroke-width="10"/><circle cx="60" cy="60" r="50" fill="none" stroke="url(#p-rg)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C*(1-k/4)).toFixed(1)}" transform="rotate(-90 60 60)"/><text x="60" y="68" text-anchor="middle" font-size="26" font-weight="700" fill="var(--fg)" style="font-family:var(--f-mono)">${k}/4</text></svg>
+  <ol class="steps">${st.map(s=>`<li class="${s[1]?'ok':''}"><i>${s[1]?'✓':''}</i>${s[0]}</li>`).join('')}</ol></div>
+  <div class="stats"><div><b>${rows.reduce((a,r)=>a+r.length,0)}</b>опытов в задании 1</div><div><b>${sc} из ${$$('.ds').length}</b>баллов самооценки</div></div>
+  <div class="row" style="margin-top:20px"><button class="p" data-lab="10-0">Продолжить лабораторную № 1</button></div>`}
+
+/* навигация */
+const NAVMAP={home:'home',grade:'home',labs:'labs',lab:'labs',prog:'prog'};
+const view=v=>{curView=v;['home','labs','prog','grade','lab'].forEach(x=>$('#'+x).hidden=x!=v);$$('#mainnav button').forEach(b=>b.classList.toggle('on',b.dataset.nav==NAVMAP[v]));scrollTo(0,0)};
+function openLab(){backTo=curView=='labs'?'labs':'grade';$('#backLab').textContent=backTo=='labs'?'← К лабораториям':'← К списку лабораторных';view('lab');go('th')}
+$('#backLab').onclick=()=>view(backTo);
+document.addEventListener('click',e=>{const b=e.target.closest('[data-g],[data-v],[data-lab],[data-nav]');if(!b)return;
+if(b.dataset.nav){view(b.dataset.nav)}
+else if(b.dataset.g){const g=b.dataset.g,a=LABS[g];$('#gt').textContent=g+' класс. Лабораторные работы';$('#labslist').innerHTML=a.length?labBtn(g,a):'<p class="sub">Лабораторные работы для этого класса появятся позже.</p>';view('grade')}
+else if(b.dataset.v)view(b.dataset.v);
+else if(b.dataset.lab=='10-0')openLab()});
+document.addEventListener('change',e=>{if(e.target.classList.contains('ds')){const c=$$('.ds');$('#sc').textContent=c.filter(x=>x.checked).length+' из '+c.length;save()}});
+
+/* отчёт */
+const tx=e=>e.innerHTML.replace(/<span class="fr" data-t="([^"]*)">.*?<\/span><\/span>/g,'$1').replace(/<br>|<\/p>|<\/div>/g,'\n').replace(/<[^>]+>/g,'');
+function report(){const N=$('#nm').value.trim(),Q=['Задание 3. Независимая величина','Задание 3. Зависимая величина','Задание 3. Контролируемые величины','Задание 3. Точность измерений','Задание 3. Факторы, влияющие на результат','Задание 3. Пути улучшения','Вывод по работе','Контрольный вопрос 1','Контрольный вопрос 2','Контрольный вопрос 3'];
+let o=`ЛАБОРАТОРНАЯ РАБОТА № 1. Исследование движения шарика в жидкостях различной вязкости\nФИО: ${N}\nДата: ${new Date().toLocaleDateString('ru-RU')}\n\nЗАДАНИЕ 1 (20 °C)\n`;
+L.forEach((l,i)=>{o+=l.n+':\n';rows[i].forEach((r,j)=>o+=`  ${j+1}) [${pb(r)}] t = ${f(r.t)} с; υ = ${f(r.v)} м/с; η = ${f(r.eta,4)} мПа·с\n`);if(!rows[i].length)o+='  нет опытов\n'});
+o+='\n'+tx($('#res1'))+'\n\nЗАДАНИЕ 2\n'+tx($('#res2'))+'\n\nВЫВОДЫ И АНАЛИЗ ЭКСПЕРИМЕНТА\n';
+$$('.tx').forEach((t,i)=>o+=`\n${Q[i]||'Ответ '+(i+1)}:\n${t.value.trim()||'—'}\n`);
+o+='\nСАМООЦЕНИВАНИЕ (10.1.5.2, 10.1.5.3)\n';
+$$('.ds').forEach(x=>o+=`[${x.checked?'+':' '}] ${x.closest('tr').querySelector('td:not([rowspan])').textContent}\n`);
+return o+'Итого: '+$('#sc').textContent+'\n'}
+async function fallback(m,txt){
+  if(!window.claude){try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain;charset=utf-8'}));a.download='Лаб1_'+$('#nm').value.trim().replace(/[^\p{L}\p{N}]+/gu,'_')+'.txt';document.body.append(a);a.click();a.remove();m.textContent='Файл скачан в папку «Загрузки». Откройте папку на Google Диске и загрузите его туда.';return}catch(e){}}
+  try{await navigator.clipboard.writeText(txt);m.textContent='Сохранение файла недоступно, поэтому отчёт скопирован. Вставьте его в документ и загрузите в папку учителя.'}
+  catch(e){m.innerHTML='Сохранение файла недоступно. Скопируйте отчёт из поля ниже и вставьте в документ.<textarea class="rpt" readonly></textarea>';const t=m.querySelector('textarea');t.value=txt;t.focus();t.select()}}
+async function saveReport(m){const N=$('#nm').value.trim();
+  if(N.length<3){m.textContent='Введите фамилию и имя в поле вверху страницы.';$('#nm').focus();scrollTo(0,0);return}
+  let d=null;try{d=window.claude&&await claude.use('downloads')}catch(e){}
+  const txt=report();if(!d)return fallback(m,txt);
+  try{await d.save({filename:'Лаб1_'+N.replace(/[^\p{L}\p{N}]+/gu,'_')+'.txt',data:txt});m.textContent='Файл сохранён. Теперь откройте папку на Google Диске и загрузите файл туда.'}
+  catch(e){if(e&&e.code=='declined')m.textContent='Сохранение отменено.';else fallback(m,txt)}}
+$('#sv2').onclick=()=>saveReport($('#svm'));
+$('#sv0').onclick=()=>{save();$('#svm0').textContent='Ответы сохранены в таблицах ✓ ('+new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})+')'};
+$('#rs').onclick=()=>{const b=$('#rs');if(b.dataset.s!='1'){b.dataset.s='1';b.textContent='Нажмите ещё раз: всё будет стёрто';setTimeout(()=>{b.dataset.s='';b.textContent='Начать заново'},4000);return}try{sessionStorage.removeItem(KEY)}catch(e){}location.reload()};
+
+const go=id=>{$$('.pg').forEach(p=>p.hidden=p.id!=id);$$('#nav button').forEach(b=>b.classList.toggle('p',b.dataset.go==id));scrollTo(0,0)};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go)});
+pick(2);draw();requestAnimationFrame(loop);
+</script>
+
+</body></html>
